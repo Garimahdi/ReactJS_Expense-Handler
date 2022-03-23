@@ -1,0 +1,13 @@
+    return (
+    // Task 1: A complex html building block
+    // Task 2: Apply the CSS (CSS styling cannot be fully treated as HTML since it is JSX file)
+    // Task 3: Make the data more dynamic using JS (No more hard-coded HTML/JS)
+
+    <div className='expense-item'> {/* It is written like HTML and JS have love child*/}
+        <div>{props.date.toISOString().slice(0,10)}</div>
+        <div className = 'expense-item_description'>
+            <h2>{props.title}</h2>
+            <div className = 'expense-item_price'>${props.amount.toString()}</div>
+        </div>
+    </div>
+    );

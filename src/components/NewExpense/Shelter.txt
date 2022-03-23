@@ -1,0 +1,126 @@
+import React, {useState} from 'react';
+import './ExpenseForm.css';
+
+const ExpenseForm = () =>{
+
+    // Updating state: Multi-state method (Tiresome, but frequently used) 
+    const [enteredTitle, setEnteredTitle] = useState(''); // Set the default in empty string, waiting to be filled with fresh input
+    const [enteredAmount, setEnteredAmount] = useState('');
+    const [enteredDate, setEnteredDate] = useState(''); // It is possible to have multi States in one component 
+   
+    // Updating state: Dict state method (Looks neat, but not popular)
+    /* 
+    const[enteredData, setEnteredData] = useState({
+        title: '',
+        ammount: '',
+        date: ''
+    }); 
+    */
+
+    const titleChangeHandler = (event) =>{
+        // Testing the code
+        //console.log('Title change detected'); //OK
+
+        // When event argument is in, check what happen
+        //console.log(event); // Object that contains data
+        //console.log(event.target.value); // key change value, this is vital to get the information
+
+        // Title data need to be stored somewhere & keep it safe if there is rendering process
+        /// Multi state method
+        setEnteredTitle(event.target.value);
+
+        /* 
+        // Dict state method
+        setEnteredData((prevDict) =>{
+            return{
+                ...prevDict,
+                title: event.target.value
+            }
+        }) 
+        */
+    };
+
+    const amountChangeHandler = (event) =>{
+        // Multi state method
+        setEnteredAmount(event.target.value);
+
+        /*
+        // State dict method 
+        setEnteredData((prevDict) =>{
+            return{
+                ...prevDict,
+                amount: event.target.value
+            } // By doing this, it guarantees that React will show the latest state snapshot and keeping all scheduled state updates in mind 
+        });
+        */
+        //console.log(event);
+    };
+
+    const dateChangeHandler = (event) =>{
+        // Multi state method
+        setEnteredDate(event.target.value);
+
+        /* 
+        // State dict method
+        setEnteredData((prevDict) =>{
+            return{
+                ...prevDict,
+                date: event.target.value
+            }
+        });
+        */
+        //console.log(event);
+    };
+
+    const submitHandler = (event) =>{
+        // To prevent auto refresh after clicking the submit button, which is the default setup to send request from front to back
+        event.preventDefault();
+
+        const expenseData = {
+            title: enteredTitle,
+            amount: enteredAmount,
+            date: new Date(enteredDate)
+        };
+        
+        console.log(expenseData); // Check what happen after the submit button is clicked
+
+        // What to do next is to delete the input after submitting --> Two-way binding
+        // Def: Listening the changes and pass a new value back into the input. The input can be changed or reset programmatically
+        // Just put empty string in the JSX value input attribute
+        // Then, overwrite all of the function update as empty string
+        setEnteredTitle('');
+        setEnteredAmount('');
+        setEnteredDate('');
+    };
+
+    return(
+        <form onSubmit = {submitHandler}>
+            <div className = 'new-expense_controls'>
+                <div className = 'new-expense_control'>
+                    <label>Title</label>
+                    <input type = 'text' value = {enteredTitle} onChange = {titleChangeHandler} />
+                </div>
+            </div>
+
+            <div className = 'new-expense_controls'>
+                <div className = 'new-expense_control'>
+                    <label>Amount</label>
+                    <input type = 'number' value = {enteredAmount} min = '0.01' step = '0.01' onChange = {amountChangeHandler} />
+                </div>
+            </div>
+
+            <div className = 'new-expense_controls'>
+                <div className = 'new-expense_control'>
+                    <label>Date</label>
+                    <input type = 'date' value = {enteredDate} min = '2019-01-01' max = '2023-12-31' onChange = {dateChangeHandler} />
+                </div>
+            </div>
+
+            <div className = 'new-expense_actions'>
+                <button type = 'submit'>Add Expense</button>
+            </div>
+        </form>
+    )
+}
+
+export default ExpenseForm;
